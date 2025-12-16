@@ -32,4 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
+progress.md 
+best_practices.md
+future_tasks.md
 CURRENT_PROBLEMS.md

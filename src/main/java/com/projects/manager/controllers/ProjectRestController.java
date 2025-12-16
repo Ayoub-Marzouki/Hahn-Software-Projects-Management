@@ -1,6 +1,5 @@
 package com.projects.manager.controllers;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projects.manager.models.Project;
-import com.projects.manager.models.Task;
 import com.projects.manager.services.ProjectService;
 
 import jakarta.validation.Valid;
@@ -59,26 +57,6 @@ public class ProjectRestController {
 
     @GetMapping("/{id}/progress")
     public ResponseEntity<Map<String, Object>> getProjectProgress(@PathVariable long id) {
-        Project project = projectService.getProjectById(id);
-        
-        List<Task> tasks = project.getTasks();
-        int totalTasks = 0;
-        int completedTasks = 0;
-        double progressPercentage = 0.0;
-
-        if (tasks != null && !tasks.isEmpty()) {
-            totalTasks = tasks.size();
-            completedTasks = (int) tasks.stream().filter(Task::isCompleted).count();
-            progressPercentage = (completedTasks * 100.0) / totalTasks;
-        }
-
-        Map<String, Object> progress = new HashMap<>();
-        progress.put("projectId", id);
-        progress.put("projectTitle", project.getTitle());
-        progress.put("totalTasks", totalTasks);
-        progress.put("completedTasks", completedTasks);
-        progress.put("progressPercentage", Math.round(progressPercentage * 100.0) / 100.0);
-
-        return ResponseEntity.ok(progress);
+        return ResponseEntity.ok(projectService.getProjectProgress(id));
     }
 }
