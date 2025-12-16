@@ -1,10 +1,10 @@
 package com.projects.manager.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.projects.manager.exceptions.ResourceNotFoundException;
 import com.projects.manager.models.Project;
 import com.projects.manager.repositories.ProjectRepository;
 
@@ -27,14 +27,18 @@ public class ProjectService {
     }
 
     public Project updateProject(@Valid Project project) {
+        // Ensure existance before update
+        getProjectById(project.getId());
         return projectRepository.save(project);
     }
 
-    public Optional<Project> getProjectById(long id) {
-        return projectRepository.findById(id);
+    public Project getProjectById(long id) {
+        return projectRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Project with ID " + id + " not found"));
     }
 
-    public void deleteProject(Project project) {
+    public void deleteProject(long id) {
+        Project project = getProjectById(id); // Fail fast if not found
         projectRepository.delete(project);
     }
 }

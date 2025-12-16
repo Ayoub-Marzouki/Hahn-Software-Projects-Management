@@ -1,10 +1,10 @@
 package com.projects.manager.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.projects.manager.exceptions.ResourceNotFoundException;
 import com.projects.manager.models.Task;
 import com.projects.manager.repositories.TaskRepository;
 import jakarta.validation.Valid;
@@ -26,14 +26,17 @@ public class TaskService {
     }
 
     public Task updateTask(@Valid Task task) {
+        getTaskById(task.getId()); // Ensure existence
         return taskRepository.save(task);
     }
 
-    public Optional<Task> getTaskById(long id) {
-        return taskRepository.findById(id);
+    public Task getTaskById(long id) {
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task with ID " + id + " not found"));
     }
 
-    public void deleteTask(Task task) {
+    public void deleteTask(long id) {
+        Task task = getTaskById(id);
         taskRepository.delete(task);
     }
 
