@@ -1,8 +1,17 @@
-export default function App() {
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Dashboard from './pages/Dashboard';
+
+function App() {
   return (
-    <div>
-      <h1>yooooo</h1>
-      <p></p>
+    <div className="App">
+      <Navbar />
+      <main className="content">
+        <Dashboard />
+      </main>
+      <Footer />
     </div>
   );
 }
+
+export default App;

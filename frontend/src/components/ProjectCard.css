@@ -1,0 +1,63 @@
+.project-card {
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 1.5rem;
+	background-color: white;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	transition: transform 0.2s;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.project-card:hover {
+	transform: translateY(-2px);
+}
+
+.project-title {
+	margin: 0;
+	color: #333;
+}
+
+.project-desc {
+	color: #666;
+	font-size: 0.9rem;
+	flex-grow: 1;
+}
+
+.project-progress {
+	margin: 10px 0;
+}
+
+.task-count {
+	font-size: 0.8rem;
+	color: #888;
+}
+
+.progress-bar-bg {
+	background-color: #eee;
+	height: 8px;
+	border-radius: 4px;
+	margin-top: 5px;
+	overflow: hidden;
+}
+
+.progress-bar-fill {
+	background-color: #00bcd4;
+	height: 100%;
+	transition: width 0.3s ease-in-out;
+}
+
+.view-details-btn {
+	background-color: #333;
+	color: white;
+	border: none;
+	padding: 0.5rem;
+	border-radius: 4px;
+	cursor: pointer;
+	margin-top: 10px;
+}
+
+.view-details-btn:hover {
+	background-color: #555;
+}
