@@ -8,7 +8,6 @@ function Navbar() {
       </div>
       <ul className="navbar-links">
         <li>Dashboard</li>
-        <li>My Projects</li>
         <li>Logout</li>
       </ul>
     </nav>

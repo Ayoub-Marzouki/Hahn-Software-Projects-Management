@@ -26,8 +26,18 @@ public class TaskService {
     }
 
     public Task updateTask(@Valid Task task) {
-        getTaskById(task.getId()); // Ensure existence
-        return taskRepository.save(task);
+        // Fetch existing task to preserve relationships (like Project)
+        Task existingTask = getTaskById(task.getId());
+        
+        // Update fields
+        existingTask.setTitle(task.getTitle());
+        existingTask.setDescription(task.getDescription());
+        existingTask.setDueDate(task.getDueDate());
+        existingTask.setIsCompleted(task.getIsCompleted());
+        
+        // Note: We do NOT update 'project' here, preserving the existing link.
+        
+        return taskRepository.save(existingTask);
     }
 
     public Task getTaskById(long id) {

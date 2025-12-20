@@ -14,9 +14,47 @@
 	transform: translateY(-2px);
 }
 
+.card-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+}
+
+.header-actions {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.project-percentage-chip {
+	background-color: #e0f7fa;
+	color: #00838f;
+	padding: 4px 8px;
+	border-radius: 12px;
+	font-size: 0.75rem;
+	font-weight: bold;
+}
+
 .project-title {
 	margin: 0;
 	color: #333;
+}
+
+.delete-btn {
+	background: none;
+	border: none;
+	color: #999;
+	font-size: 1.2rem;
+	line-height: 1rem;
+	cursor: pointer;
+	padding: 5px 8px;
+	border-radius: 4px;
+	transition: all 0.2s;
+}
+
+.delete-btn:hover {
+	background-color: #dc3545;
+	color: white;
 }
 
 .project-desc {
@@ -56,6 +94,9 @@
 	border-radius: 4px;
 	cursor: pointer;
 	margin-top: 10px;
+	text-decoration: none; /* Added for Link */
+	display: inline-block; /* Added for Link */
+	text-align: center;
 }
 
 .view-details-btn:hover {

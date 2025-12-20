@@ -1,5 +1,9 @@
 package com.projects.manager.models;
 
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,35 +12,36 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @NotBlank(message = "Title cannot be null, nor entirely blank!")
     @Column(nullable = false)
     private String title;
 
-    @NotBlank(message = "Title cannot be null, nor entirely blank!")
+    @NotBlank(message = "Description cannot be null, nor entirely blank!")
     @Column(nullable = false)
     private String description;
 
-    @NotBlank(message = "Title cannot be null, nor entirely blank!")
+    @NotNull(message = "Due Date is required")
     @Column(nullable = false)
-    private String dueDate;
+    private LocalDate dueDate;
 
-    private boolean isCompleted;
+    @Column(nullable = false)
+    private Boolean isCompleted = false;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // Allow input, prevent loop in output
     private Project project;
     
 }

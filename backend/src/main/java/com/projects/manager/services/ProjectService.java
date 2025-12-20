@@ -48,11 +48,13 @@ public class ProjectService {
         int completedTasks = 0;
         double progressPercentage = 0.0;
 
-        if (tasks != null && !tasks.isEmpty()) {
-            totalTasks = tasks.size();
-            completedTasks = (int) tasks.stream().filter(Task::isCompleted).count();
-            progressPercentage = (completedTasks * 100.0) / totalTasks;
-        }
+		if (tasks != null && !tasks.isEmpty()) {
+			totalTasks = tasks.size();
+			completedTasks = (int) tasks.stream()
+					.filter(task -> Boolean.TRUE.equals(task.getIsCompleted()))
+					.count();
+			progressPercentage = (completedTasks * 100.0) / totalTasks;
+		}
 
         Map<String, Object> progress = new HashMap<>();
         progress.put("projectId", id);

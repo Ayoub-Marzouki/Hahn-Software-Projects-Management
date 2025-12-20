@@ -42,8 +42,8 @@ class ProjectServiceTest {
         project.setId(projectId);
         project.setTitle("Test Project");
 
-        Task t1 = new Task(); t1.setCompleted(true);
-        Task t2 = new Task(); t2.setCompleted(false);
+        Task t1 = new Task(); t1.setIsCompleted(true);
+        Task t2 = new Task(); t2.setIsCompleted(false);
         project.setTasks(Arrays.asList(t1, t2));
 
         when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));

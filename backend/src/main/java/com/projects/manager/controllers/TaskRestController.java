@@ -56,7 +56,7 @@ public class TaskRestController {
     @PatchMapping("/{id}/complete")
     public ResponseEntity<Task> markTaskAsCompleted(@PathVariable long id) {
         Task task = taskService.getTaskById(id);
-        task.setCompleted(true);
+        task.setIsCompleted(true);
         return ResponseEntity.ok(taskService.updateTask(task));
     }
 
