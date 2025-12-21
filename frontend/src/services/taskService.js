@@ -1,12 +1,18 @@
 const API_URL = "http://localhost:8080/api/tasks";
 
+const getHeaders = () => {
+	const token = localStorage.getItem('token');
+	return {
+		"Content-Type": "application/json",
+		"Authorization": token ? `Bearer ${token}` : ""
+	};
+};
+
 export const createTask = async (taskData) => {
 	try {
 		const response = await fetch(API_URL, {
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
+			headers: getHeaders(),
 			body: JSON.stringify(taskData)
 		});
 		if (!response.ok) {
@@ -24,9 +30,7 @@ export const updateTask = async (id, taskData) => {
 	try {
 		const response = await fetch(`${API_URL}/${id}`, {
 			method: "PUT",
-			headers: {
-				"Content-Type": "application/json"
-			},
+			headers: getHeaders(),
 			body: JSON.stringify(taskData)
 		});
 		if (!response.ok) {
@@ -43,6 +47,7 @@ export const completeTask = async (id) => {
 	try {
 		const response = await fetch(`${API_URL}/${id}/complete`, {
 			method: "PATCH",
+			headers: getHeaders()
 		});
 		if (!response.ok) {
 			throw new Error("Failed to mark task as completed");
@@ -58,6 +63,7 @@ export const deleteTask = async (id) => {
 	try {
 		const response = await fetch(`${API_URL}/${id}`, {
 			method: "DELETE",
+			headers: getHeaders()
 		});
 		if (!response.ok) {
 			throw new Error("Failed to delete task");

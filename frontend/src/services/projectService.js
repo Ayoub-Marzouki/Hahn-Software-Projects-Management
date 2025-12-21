@@ -1,9 +1,18 @@
-// In production, use environment variables to avoid hardcoding localhost (for deployment).
 const API_URL = "http://localhost:8080/api/projects";
+
+const getHeaders = () => {
+	const token = localStorage.getItem('token');
+	return {
+		"Content-Type": "application/json",
+		"Authorization": token ? `Bearer ${token}` : ""
+	};
+};
 
 export const getAllProjects = async () => {
 	try {
-		const response = await fetch(API_URL);
+		const response = await fetch(API_URL, {
+			headers: getHeaders()
+		});
 		if (!response.ok) {
 			throw new Error("Failed to fetch projects");
 		}
@@ -16,7 +25,9 @@ export const getAllProjects = async () => {
 
 export const getProjectById = async (id) => {
 	try {
-		const response = await fetch(`${API_URL}/${id}`);
+		const response = await fetch(`${API_URL}/${id}`, {
+			headers: getHeaders()
+		});
 		if (!response.ok) {
 			throw new Error("Failed to fetch project details");
 		}
@@ -31,9 +42,7 @@ export const createProject = async (projectData) => {
 	try {
 		const response = await fetch(API_URL, {
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
+			headers: getHeaders(),
 			body: JSON.stringify(projectData)
 		});
 		
@@ -53,6 +62,7 @@ export const deleteProject = async (id) => {
 	try {
 		const response = await fetch(`${API_URL}/${id}`, {
 			method: "DELETE",
+			headers: getHeaders()
 		});
 		if (!response.ok) {
 			throw new Error("Failed to delete project");

@@ -1,0 +1,39 @@
+.notification-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    padding: 15px 25px;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 9999;
+    animation: fadeIn 0.3s ease-in;
+    transition: opacity 0.5s ease-out;
+    opacity: 1;
+}
+
+.notification-toast.fade-out {
+    opacity: 0;
+}
+
+.notification-toast.success {
+    background-color: #28a745;
+}
+
+.notification-toast.error {
+    background-color: #dc3545;
+}
+
+.notification-toast.info {
+    background-color: #00bcd4;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

@@ -8,17 +8,32 @@ import com.projects.manager.exceptions.ResourceNotFoundException;
 import com.projects.manager.models.Task;
 import com.projects.manager.repositories.TaskRepository;
 import jakarta.validation.Valid;
+import com.projects.manager.models.User;
+import com.projects.manager.repositories.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Service
 public class TaskService {
-    private TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, UserRepository userRepository) {
         this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
+    }
+
+    private User getCurrentUser() {
+        String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+        User currentUser = getCurrentUser();
+        return taskRepository.findAll().stream()
+                .filter(t -> t.getProject().getUser().getId().equals(currentUser.getId()))
+                .toList();
     }
 
     public Task createTask(@Valid Task task) {
@@ -26,23 +41,23 @@ public class TaskService {
     }
 
     public Task updateTask(@Valid Task task) {
-        // Fetch existing task to preserve relationships (like Project)
         Task existingTask = getTaskById(task.getId());
-        
-        // Update fields
         existingTask.setTitle(task.getTitle());
         existingTask.setDescription(task.getDescription());
         existingTask.setDueDate(task.getDueDate());
         existingTask.setIsCompleted(task.getIsCompleted());
-        
-        // Note: We do NOT update 'project' here, preserving the existing link.
-        
+
         return taskRepository.save(existingTask);
     }
 
     public Task getTaskById(long id) {
-        return taskRepository.findById(id)
+        Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task with ID " + id + " not found"));
+        
+        if (!task.getProject().getUser().getId().equals(getCurrentUser().getId())) {
+            throw new ResourceNotFoundException("Task not found");
+        }
+        return task;
     }
 
     public void deleteTask(long id) {
@@ -51,6 +66,8 @@ public class TaskService {
     }
 
     public List<Task> getTasksByProjectId(Long projectId) {
-        return taskRepository.findByProjectId(projectId);
+        return taskRepository.findByProjectId(projectId).stream()
+                .filter(t -> t.getProject().getUser().getId().equals(getCurrentUser().getId()))
+                .toList();
     }
 }
